@@ -16,8 +16,11 @@ jobs:
     steps:
       - name: Checkout your repository using git
         uses: actions/checkout@v4
+        
       - name: Install, build, and upload your site
         uses: withastro/action@v2
+        with:
+          node-version: 22 # 👈 新增这一行：强制 GitHub 使用 Node.js 22 版本
 
   deploy:
     needs: build
