@@ -1,0 +1,135 @@
+---
+interface Props {
+	title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<title>{title}</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=VT323&family=Fira+Code:wght@400;600&family=Patrick+Hand&display=swap" rel="stylesheet">
+	</head>
+	<body>
+		<div class="pixel-overlay"></div>
+		
+		<slot />
+		
+		<script>
+			const createTrail = () => {
+				const colors = ['#FFF5A5', '#FFD700', '#FFA500', '#FFFFFF'];
+				window.addEventListener('mousemove', (e) => {
+					if (Math.random() > 0.2) return;
+					
+					const star = document.createElement('div');
+					star.className = 'pixel-star';
+					const size = Math.random() * 4 + 4;
+					star.style.width = `${size}px`;
+					star.style.height = `${size}px`;
+					star.style.left = `${e.clientX}px`;
+					star.style.top = `${e.clientY + window.scrollY}px`;
+					star.style.background = colors[Math.floor(Math.random() * colors.length)];
+					
+					document.body.appendChild(star);
+					
+					setTimeout(() => {
+						star.style.opacity = '0';
+						star.style.transform = 'translateY(12px) scale(0.5)';
+						setTimeout(() => star.remove(), 300);
+					}, 400);
+				});
+			};
+			if (window.innerWidth > 768) { createTrail(); }
+		</script>
+	</body>
+</html>
+
+<style is:global>
+	:root {
+		--border-wood: #753916;
+		--border-wood-inner: #b56734;
+		--bg-panel: #fbc681;
+		--bg-panel-light: #ffebcc;
+		--text-stardew: #3a1d0b;
+		--stardew-green: #4fa237;
+		--stardew-red: #d13e3e;
+		--stardew-blue: #256bb3;
+	}
+
+	*, *::before, *::after {
+		box-sizing: border-box;
+		margin: 0;
+		padding: 0;
+	}
+
+	body {
+		/* 将你上传的图片放入 public/stardew-bg.jpg */
+		background-image: url('/stardew-bg.jpg');
+		background-size: cover;
+		background-position: center bottom;
+		background-repeat: no-repeat;
+		background-attachment: fixed;
+		
+		/* 关键：强制浏览器用像素点阵渲染（不进行平滑模糊），保持纯正像素风 */
+		image-rendering: pixelated;
+		image-rendering: crisp-edges;
+		
+		color: var(--text-stardew);
+		font-family: 'Fira Code', monospace;
+		min-height: 100vh;
+		padding-bottom: 60px;
+		position: relative;
+	}
+
+	/* 氛围滤镜 */
+	.pixel-overlay {
+		position: fixed;
+		top: 0; left: 0; width: 100%; height: 100%;
+		background: rgba(0, 0, 0, 0.05);
+		pointer-events: none;
+		z-index: 0;
+	}
+
+	/* 纯正星露谷木质 UI 边框 */
+	.stardew-box {
+		background-color: #e8a05d;
+		border: 6px solid var(--border-wood);
+		box-shadow: inset -4px -4px 0px #b86f30, 
+		            inset 4px 4px 0px #ffcf9e, 
+		            0 8px 16px rgba(0,0,0,0.3);
+		border-radius: 2px;
+		padding: 24px;
+		position: relative;
+		z-index: 1;
+	}
+
+	.stardew-inner-box {
+		background-color: var(--bg-panel-light);
+		border: 4px solid var(--border-wood-inner);
+		box-shadow: inset 2px 2px 0px rgba(0,0,0,0.1);
+		padding: 15px;
+		border-radius: 2px;
+	}
+
+	.pixel-font { font-family: 'VT323', monospace; letter-spacing: 0.5px; }
+	.diary-font { font-family: 'Patrick Hand', cursive; font-size: 1.4rem; }
+
+	.pixel-star {
+		position: absolute;
+		pointer-events: none;
+		z-index: 9999;
+		transition: transform 0.4s ease-out, opacity 0.4s ease-out;
+	}
+
+	/* 自定义木质滚动条 */
+	::-webkit-scrollbar { width: 14px; }
+	::-webkit-scrollbar-track { background: rgba(58, 29, 11, 0.2); }
+	::-webkit-scrollbar-thumb { background: #e8a05d; border: 3px solid var(--border-wood); }
+</style>
