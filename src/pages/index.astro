@@ -141,6 +141,19 @@ import Layout from '../layouts/Layout.astro';
                         </div>
 
                     </div>
+				<script>
+				document.querySelectorAll('.skill-progress-row').forEach(row => {
+				const levelText = row.querySelector('.skill-level-col')?.textContent;
+				if (!levelText) return;
+				
+				const level = parseInt(levelText.replace('Level ', ''));
+				const blocks = row.querySelectorAll('.block');
+				
+				blocks.forEach((block, i) => {
+					block.classList.toggle('active', i < level);
+				});
+				});
+				</script>
                 </section>
 
                 <section id="diary-section" class="stardew-box diary-container-v2">
