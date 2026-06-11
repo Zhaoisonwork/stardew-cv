@@ -415,6 +415,35 @@ import Layout from '../layouts/Layout.astro';
     .modal-timeline { padding-left: 16px; border-left: 4px dashed #855329; }
     .time-block { margin-bottom: 20px; position: relative; }
     .time-badge { background: #e3b073; border: 2px solid #542b0e; padding: 2px 8px; display: inline-block; margin-bottom: 6px; }
+
+
+    @media (max-width: 768px) {
+    
+    /* 1. 把固定宽度的盒子变成自适应的百分比 */
+    .stardew-box {
+        width: 95%; /* 留出一点边缘空隙 */
+        margin: 10px auto; 
+    }
+
+    /* 2. 把左右并列的布局改成上下堆叠 */
+    .modal-list-item {
+        flex-direction: column; /* 原本左右排，现在上下排 */
+        align-items: center;    /* 居中对齐 */
+        text-align: center;
+    }
+
+    /* 3. 缩小字体和间距，防止文字爆框 */
+    .pixel-font {
+        font-size: 0.9rem; 
+    }
+    
+    .stardew-inner-box {
+        padding: 10px; /* 减小内边距，给内容留更多空间 */
+    }
+
+    /* 4. 如果你的侧边栏或导航栏在手机上太长，可以隐藏或重排 */
+    .sidebar { display: none; }
+}
 </style>
 
 <script>
@@ -461,4 +490,6 @@ import Layout from '../layouts/Layout.astro';
 
         sections.forEach(section => observer.observe(section));
     }
+
+    
 </script>
